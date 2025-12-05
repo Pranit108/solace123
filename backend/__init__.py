@@ -30,10 +30,14 @@ def create_app(config_name=None):
     
     # Enable CORS for all routes
     CORS(app, resources={
-        r"/api/*": {
-            "origins": os.getenv('FRONTEND_URL', 'http://localhost:3000'),
-            "methods": ["GET", "POST", "PUT", "OPTIONS"],
-            "allow_headers": ["Content-Type", "Authorization"]
+        r"/*": {
+            "origins": [
+                "http://localhost:3000",
+                "https://solace123.onrender.com"
+            ],
+            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            "allow_headers": ["Content-Type", "Authorization"],
+            "supports_credentials": True
         }
     })
     
