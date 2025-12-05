@@ -6,8 +6,8 @@ services:
     build:
       buildCommand: |
         pip install -r backend/requirements.txt
-        pip install gunicorn
-      startCommand: gunicorn wsgi:app
+        python -m pip install gunicorn
+      startCommand: python -m gunicorn wsgi:app
     envVars:
       - key: PYTHON_VERSION
         value: 3.9.0
