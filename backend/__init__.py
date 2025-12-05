@@ -25,8 +25,8 @@ def create_app(config_name=None):
     # Initialize database
     database_uri = os.getenv('DATABASE_URL', 'sqlite:///campus_connect.db')
     engine = create_engine(database_uri, echo=False, future=True)
-    SessionLocal = scoped_session(sessionmaker(bind=engine, autoflush=False, autocommit=False))
-    db_session = SessionLocal()
+    SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+    db_session = scoped_session(SessionLocal)
     
     # Enable CORS for all routes
     CORS(app, resources={
