@@ -4,7 +4,11 @@ services:
     name: campus-connect-backend
     env: python
     build:
-      buildCommand: pip install -r backend/requirements.txt
+      buildCommand: |
+        chmod +x build-backend.sh
+        ./build-backend.sh
+        chmod +x build.sh
+        ./build.sh
       startCommand: python wsgi.py
     envVars:
       - key: PYTHON_VERSION
