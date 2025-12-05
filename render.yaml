@@ -1,0 +1,40 @@
+services:
+  # Backend service (Flask API)
+  - type: web
+    name: campus-connect-backend
+    env: python
+    build:
+      buildCommand: pip install -r backend/requirements.txt
+      startCommand: gunicorn "backend.app:create_app()"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.0
+      - key: DATABASE_URL
+        fromDatabase:
+          name: campus_connect_db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: FLASK_ENV
+        value: production
+    databaseTier: free
+
+  # Frontend service (React)
+  - type: web
+    name: campus-connect-frontend
+    env: static
+    buildCommand: |
+      cd frontend
+      npm install
+      npm run build
+    staticPublishPath: ./frontend/build
+    envVars:
+      - key: REACT_APP_API_URL
+        sync: false  # Will be set in Render dashboard
+
+# Database
+databases:
+  - name: campus_connect_db
+    databaseName: campus_connect
+    user: campus_connect_user
+    plan: free

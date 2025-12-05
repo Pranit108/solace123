@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import {
-  collection, addDoc, query, orderBy, onSnapshot, serverTimestamp,
+  collection,
+  addDoc,
+  query,
+  orderBy,
+  onSnapshot,
+  serverTimestamp,
 } from "firebase/firestore";
 import { db } from "./firebase";
 
@@ -33,43 +38,53 @@ export default function Chat({ user, matchUser, onExit }) {
   };
 
   return (
-    <div className="bg-white p-4 rounded-2xl shadow-md w-96 max-w-full">
-      <h2 className="text-lg font-bold text-orange-600 mb-3 text-center">
-        Chat with {matchUser.name}
-      </h2>
+    <div className="chat-panel">
+      <div className="chat-panel__header">
+        <div>
+          <p className="pill">Live chat</p>
+          <h3>Chat with {matchUser.name}</h3>
+          <p className="muted">Keep the momentum going with realtime messages.</p>
+        </div>
+        <div className="chat-actions">
+          <button 
+            className="btn small danger"
+            title="Block user"
+            onClick={() => alert('Block user functionality will be added later')}
+          >
+            🚫 Block User
+          </button>
+          <button className="btn ghost" onClick={onExit}>
+            Close
+          </button>
+        </div>
+      </div>
 
-      <div className="h-64 overflow-y-auto border rounded p-2 bg-orange-50 mb-3">
+      <div className="chat-panel__messages">
         {messages.map((m, i) => {
           const mine = m.sender === user.email;
           return (
-            <p key={i} className={`my-1 ${mine ? "text-right" : "text-left"}`}>
-              <span className={`inline-block px-2 py-1 rounded-lg ${mine ? "bg-orange-200" : "bg-gray-200"}`}>
-                {m.text}
-              </span>
-            </p>
+            <div
+              key={i}
+              className={`chat-bubble ${mine ? "chat-bubble--me" : ""}`}
+            >
+              <p>{m.text}</p>
+              <small>{mine ? "You" : m.senderName || matchUser.name}</small>
+            </div>
           );
         })}
       </div>
 
-      <div className="flex gap-2">
+      <div className="chat-panel__input">
         <input
-          className="border p-2 rounded flex-1"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
           placeholder="Type a message…"
         />
-        <button
-          onClick={sendMessage}
-          className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
-        >
+        <button className="btn primary" onClick={sendMessage}>
           Send
         </button>
       </div>
-
-      <button onClick={onExit} className="text-sm text-gray-500 mt-2 hover:underline">
-        Back
-      </button>
     </div>
   );
 }

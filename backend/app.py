@@ -135,6 +135,10 @@ def register():
     required = ["name", "email", "password"]
     if not all(k in data and data[k] for k in required):
         return jsonify({"error": "name, email, password are required"}), 400
+        
+    # Check for thapar.edu email
+    if not data["email"].lower().endswith('@thapar.edu'):
+        return jsonify({"error": "Only thapar.edu email addresses are allowed"}), 400
 
     db = SessionLocal()
     try:
@@ -253,6 +257,7 @@ def match_for_user():
 @app.get("/")
 def health():
     return jsonify({"status": "ok", "app": "Campus Connect Backend"})
+
 
 
 if __name__ == "__main__":
