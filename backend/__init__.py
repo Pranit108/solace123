@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request, make_response
 from flask_cors import CORS
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
@@ -31,15 +31,22 @@ def create_app(config_name=None):
     # Enable CORS for all routes
     CORS(app, resources={
         r"/*": {
-            "origins": [
-                "http://localhost:3000",
-                "https://solace123.onrender.com"
-            ],
+            "origins": ["*"],  # Temporarily allow all origins for testing
             "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
             "allow_headers": ["Content-Type", "Authorization"],
             "supports_credentials": True
         }
     })
+    
+    @app.before_request
+    def handle_preflight():
+        if request.method == "OPTIONS":
+            response = make_response()
+            response.headers.add("Access-Control-Allow-Origin", "https://solace123.onrender.com")
+            response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
+            response.headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+            response.headers.add("Access-Control-Allow-Credentials", "true")
+            return response
     
     # Import and register blueprints
     from . import routes
