@@ -9,7 +9,7 @@ services:
         ./build-backend.sh
         chmod +x build.sh
         ./build.sh
-      startCommand: python wsgi.py
+      startCommand: chmod +x start.sh && ./start.sh
     envVars:
       - key: PYTHON_VERSION
         value: 3.9.0
