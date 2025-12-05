@@ -12,10 +12,12 @@ source venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
 
-# Explicitly install psycopg2-binary
+# Explicitly install required packages
 pip install psycopg2-binary==2.9.9
+pip install waitress==2.1.2
 
-# Verify psycopg2 installation
+# Verify installations
 python -c "import psycopg2; print('psycopg2 version:', psycopg2.__version__)"
+python -c "from waitress import serve; print('Waitress import successful')"
 
 echo "Backend setup complete!"
