@@ -4,10 +4,8 @@ services:
     name: campus-connect-backend
     env: python
     build:
-      buildCommand: |
-        pip install -r backend/requirements.txt
-        python -m pip install gunicorn
-      startCommand: python -m gunicorn wsgi:app
+      buildCommand: pip install -r backend/requirements.txt
+      startCommand: python wsgi.py
     envVars:
       - key: PYTHON_VERSION
         value: 3.9.0
