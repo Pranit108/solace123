@@ -12,6 +12,9 @@ source venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
 
+# Explicitly install psycopg2-binary
+pip install psycopg2-binary==2.9.9
+
 # Verify psycopg2 installation
 python -c "import psycopg2; print('psycopg2 version:', psycopg2.__version__)"
 
